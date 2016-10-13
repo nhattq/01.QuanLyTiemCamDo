@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+@model QLCamDo.Models.UserRole
+<section class="content-header">
+    <h1>
+        User Role
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Dashboard","User")"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">User role</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- COLOR PALETTE -->
+    <div class="box box-default color-palette-box">
+        <div class="main-box clearfix">
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.Raw(ViewBag.Message)
+                </div>
+            </div>
+            <div class="col-md-12">
+                @using (Html.BeginForm())
+                {  
+                    <div class="box-body">
+                        <div class="form-group">
+                            @Html.LabelFor(o => o.RoleName)
+                            @Html.TextBoxFor(o => o.RoleName, new { @class = "form-control" })
+                            <div class="help-block">
+                                @Html.ValidationMessageFor(o => o.RoleName, null, new { @class = "has-error" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(o => o.Description)
+                            @Html.TextBoxFor(o => o.Description, new { @class = "form-control" })
+                            <div class="help-block">
+                                @Html.ValidationMessageFor(o => o.Description)
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <label>
+                                    @Html.CheckBoxFor(model => model.IsAccessControlCenter)
+                                    Được phép truy cập trung tâm điều khiển ?
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <a href="@Url.Action("Index")" class="btn btn-default">Trở về</a>
+                        <button type="submit" class="btn btn-info pull-right">Cập nhật</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+<script src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>

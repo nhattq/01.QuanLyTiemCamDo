@@ -1,0 +1,168 @@
+﻿@model QLCamDo.Models.UserModule
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+<style>
+    .fontawesome-icon-list a {
+        padding: 0 3px;
+        margin: 2px;
+    }
+
+        .fontawesome-icon-list a.active {
+            border: 1px solid #ff6a00;
+        }
+</style>
+<section class="content-header">
+    <h1>
+        Chức năng hệ thống
+        <small>Tất cả các chức năng trong hệ thống</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Dashboard","User")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">Chức năng hệ thống</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- COLOR PALETTE -->
+    <div class="box box-default color-palette-box">
+        <div class="main-box clearfix">
+            <div class="col-md-12">
+                @Html.Raw(ViewBag.Message)
+            </div>
+            @using (Html.BeginForm("Edit", "UserModule", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-lg-12">
+                    <div class="main-box-body clearfix">
+                        <div class="col-md-9">
+                            @Html.HiddenFor(o=>o.Id)
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        @Html.LabelFor(model => model.Controller, htmlAttributes: new { @class = "control-label" })
+                                        @Html.DropDownList("Controller", (IEnumerable<SelectListItem>)ViewBag.Controller, new { @class = "form-control", onchange = "getAction(this);" })
+                                        @Html.ValidationMessageFor(model => model.Controller, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(model => model.Action, htmlAttributes: new { @class = "control-label" })
+                                        <select name="Action" class="form-control slAction"></select>
+                                        @Html.ValidationMessageFor(model => model.Action, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(model => model.Order, htmlAttributes: new { @class = "control-label" })
+                                        @Html.TextBoxFor(model => model.Order, new { @class = "form-control" })
+                                        @*<select class="form-control" id="slAction"></select>*@
+                                        @Html.ValidationMessageFor(model => model.Action, "", new { @class = "text-danger" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        @Html.LabelFor(model => model.ParentId, htmlAttributes: new { @class = "control-label" })
+                                        @Html.DropDownList("Module", (IEnumerable<SelectListItem>)ViewBag.Module, new { @class = "form-control" })
+                                        @*<select class="form-control" id="slAction"></select>*@
+                                        @Html.ValidationMessageFor(model => model.ParentId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label><input type="checkbox" name="IsDisplayMenu" checked="checked" /> Cho phép hiển thị ở menu?</label>
+                                </div>
+                            </div>
+                            <div class="box-footer">
+                                <a href="@Url.Action("Index")" class="btn btn-default">Trở về</a>
+                                <button type="submit" class="btn btn-info pull-right">Cập nhật</button>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            @Html.LabelFor(model => model.Icon, htmlAttributes: new { @class = "control-label" })
+                            @Html.HiddenFor(o => o.Icon)
+                            <div class="col-md-12">
+                                <div class="row fontawesome-icon-list">
+                                    <a href="javascript:void(0)" data-icon="adjust"><i class="fa fa-adjust"></i></a>
+                                    <a href="javascript:void(0)" class="" data-icon="th"><i class="fa fa-th"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="plus"><i class="fa fa-plus"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="list"><i class="fa fa-list"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="area-chart"><i class="fa fa-area-chart"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="folder-open-o"><i class="fa fa-folder-open-o"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="arrows-h"><i class="fa fa-arrows-h"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="arrows-v"><i class="fa fa-arrows-v"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="asterisk"><i class="fa fa-asterisk"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="at"><i class="fa fa-at"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="car"><i class="fa fa-automobile"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="balance-scale"><i class="fa fa-balance-scale"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="ban"><i class="fa fa-ban"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="university"><i class="fa fa-bank"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="bar-chart"><i class="fa fa-bar-chart"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="bar-chart"><i class="fa fa-bar-chart-o"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="barcode"><i class="fa fa-barcode"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="bars"><i class="fa fa-bars"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="battery-empty"><i class="fa fa-battery-0"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="battery-quarter"><i class="fa fa-battery-1"></i></a>
+
+                                    <a href="javascript:void(0)" data-icon="battery-half"><i class="fa fa-battery-2"></i></a>
+
+                                </div>
+                            </div>
+                            @Html.ValidationMessageFor(model => model.Controller, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        var icon = $('input[name=Icon]').val();
+        $('.fa-' + icon).parent().addClass('active');
+
+        $('.fontawesome-icon-list a').click(function () {
+            $('.fontawesome-icon-list a').removeClass('active');
+            $(this).addClass('active');
+            var dataicon = $(this).attr('data-icon');
+            $('input[name=Icon]').val(dataicon);
+        });
+        var id = $('select[name=Controller]').val();
+        $.post('/UserModule/GetAction', { id: id }, function (data) {
+            $('.slAction').html(data.html);
+        });
+    });
+    function getAction(obj) {
+        var id = $(obj).val();
+        $.post('/UserModule/GetAction', { id: id }, function (data) {
+            $('.slAction').html(data.html);
+        });
+    };
+</script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+

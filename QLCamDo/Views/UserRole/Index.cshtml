@@ -1,0 +1,95 @@
+﻿@model IEnumerable<QLCamDo.Models.UserRole>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        User permission
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Dashboard","User")"><i class="fa fa-dashboard"></i> Home</a></li>
+        <li class="active">User role</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- COLOR PALETTE -->
+    <div class="box box-default color-palette-box">
+        <div class="main-box clearfix">
+            <div class="box-header">
+                <div id="example1_filter" class="dataTables_filter">
+                    <div class="form-group pull-right">
+                        <a href="@Url.Action("Create")" class="btn btn-danger pull-right">
+                            <i class="fa fa-plus-circle"></i> Thêm mới
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-12" id="divMessage">
+                    @Html.Raw(ViewBag.Message)
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="table-responsive clearfix">
+                    <table class="table table-hover table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align:center">
+                                    @Html.DisplayNameFor(model => model.RoleName)
+                                </th>
+                                <th style="text-align:center">
+                                    @Html.DisplayNameFor(model => model.Description)
+                                </th>
+                                <th style="text-align:center">
+                                    @Html.DisplayNameFor(model => model.IsAccessControlCenter)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.RoleName)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <td align="center">
+                                                @Html.Raw(QLCamDo.Utilities.HtmlUtility.BuildHtmlActive(item.IsAccessControlCenter))
+                                            </td>
+                                            <td align="center">
+                                                <a href="@Url.Action("Edit", new { id = item.Id })" class="table-link">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-square fa-stack-2x"></i>
+                                                        <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </a>
+                                                <a class="table-link danger" href="@Url.Action("Index", "Userpermission", new { roleId = item.Id })">
+                                                    <span class="fa-stack">
+                                                        <i class="fa fa-gavel fa-stack-2x"></i>
+                                                        <i class="fa fa-gavel-o fa-stack-1x fa-inverse"></i>
+                                                    </span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+
+                        </tbody>
+                    </table>
+                    <div class="col-md-12 text-right">
+                        @Html.Raw(ViewBag.Paging)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@Html.Hidden("hdUrlAjaxDelete", "/CustomerType/Delete")

@@ -1,0 +1,117 @@
+﻿@model IEnumerable<QLCamDo.ViewModels.UserPermissionViewModel>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+<section class="content-header">
+    <h1>
+        Phân quyền người dùng
+        <small>@ViewBag.RoleName</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Dashboard","User")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active">Phân quyền người dùng</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- COLOR PALETTE -->
+    <div class="box box-default color-palette-box">
+        <div class="main-box clearfix">
+            <div class="box-header">
+                <div class="row">
+                    <div class="col-md-12" id="divMessage">
+                        @Html.Raw(ViewBag.Message)
+                    </div>
+                </div>
+            </div>
+            <div class="box-body">  
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th width="70%">
+                                            Module name
+                                        </th>
+                                        <th style="text-align:center" width="20%">
+                                            <input type="checkbox" id="checkall" />
+                                        </th>
+                                        @*<th width="5%"></th>*@
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                if (Model != null)
+                                {
+                                    foreach (var item in Model)
+                                    {
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayFor(modelItem => item.ModuleName)
+                                                    </td>
+                                                    <td align="center">
+                                                        <input type="checkbox" name="chbAccess" class="chbAccess" data-id="@item.ModuleId" @(item.Access?"checked=checked":string.Empty) />
+                                                    </td>
+                                                </tr>
+                                    }
+                                }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-md-12 text-right">
+                            @Html.Raw(ViewBag.Paging)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <input type="hidden" id="hdRoleId" value="@ViewBag.Role" />
+                <a class="btn btn-default pull-left" href="@Url.Action("Index","UserRole")">Trở về</a>
+                <a class="btn btn-success btn-update-access pull-right" href="javascript:void(0)">Cập nhật</a>
+            </div>
+        </div>
+    </div>
+</section>
+@Html.Hidden("hdUrlAjaxDelete", "/CustomerType/Delete")
+<script>
+    // check All
+    function toggleChecked(status) {
+
+        $("input:checkbox").each(function () {
+
+            // Set the checked status of each to match the
+            // checked status of the check all checkbox:
+            $(this).prop("checked", status);
+        });
+    }
+
+    $(document).ready(function () {
+
+        //Set the default value of the global checkbox to true:
+        //$("#checkall").prop('checked', true);
+
+        // Attach the call to toggleChecked to the
+        // click event of the global checkbox:
+        $("#checkall").click(function () {
+
+            var status = $("#checkall").prop('checked');
+            toggleChecked(status);
+        });
+    });
+    $('.btn-update-access').on('click', function () {
+        var role = $('#hdRoleId').val();
+        var ids = '';
+        $('.chbAccess').each(function () {
+            var isCheck = $(this).is(':checked') ? 1 : 0;
+            ids += $(this).attr("data-id") + '-' + isCheck + ';';
+        });
+        //alert(ids);
+        //return;
+        $.post('/UserPermission/Update', { fn: 'update-access-all', id: ids, role: role }, function (data) {
+            $('#divMessage').html(data.message);
+        });
+    });
+</script>
