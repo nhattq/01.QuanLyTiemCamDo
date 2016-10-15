@@ -1,0 +1,63 @@
+﻿@model QLCamDo.Models.Extend
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        Thêm mới gia hạn
+        <small>Gia hạn hợp đồng</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Dashboard","User")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active"> Gia hạn hợp đồng</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- COLOR PALETTE -->
+    <div class="box box-default color-palette-box">
+        <div class="main-box clearfix">
+            <div class="col-md-12">
+                @Html.Raw(ViewBag.Message)
+            </div>
+            @using (Html.BeginForm("Create", "Extends", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-lg-12">
+                    <div class="box-header with-border">
+                        <div class="box-title">
+                            Thông tin gia hạn
+                        </div>
+                    </div>
+                    <div class="main-box-body clearfix">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.ContractId, htmlAttributes: new { @class = "control-label" })
+                                    @Html.DropDownList("ContractId", null, htmlAttributes: new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.ContractId, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Times, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.ExpiredDate, new { htmlAttributes = new { @class = "form-control datepicker" } })
+                                    @Html.ValidationMessageFor(model => model.ExpiredDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <a href="@Url.Action("Index","Contracts")" class="btn btn-default">Trở về</a>
+                        <button type="submit" class="btn btn-info pull-right">Thêm mới</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

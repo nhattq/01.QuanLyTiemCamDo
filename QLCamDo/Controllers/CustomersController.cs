@@ -7,122 +7,111 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using QLCamDo.Models;
-using QLCamDo.Bases;
 
 namespace QLCamDo.Controllers
 {
-    public class ContractsController : BaseController
+    public class CustomersController : Controller
     {
         private CamDoEntities db = new CamDoEntities();
 
-        // GET: Contracts
+        // GET: Customers
         public ActionResult Index()
         {
-            var contracts = db.Contracts.Include(c => c.Customer).Include(c => c.User).Include(c => c.User1);
-            return View(contracts.ToList());
+            return View(db.Customers.ToList());
         }
 
-        // GET: Contracts/Details/5
+        // GET: Customers/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contract contract = db.Contracts.Find(id);
-            if (contract == null)
+            Customer customer = db.Customers.Find(id);
+            if (customer == null)
             {
                 return HttpNotFound();
             }
-            return View(contract);
+            return View(customer);
         }
 
-        // GET: Contracts/Create
+        // GET: Customers/Create
         public ActionResult Create()
         {
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name");
             return View();
         }
 
-        // POST: Contracts/Create
+        // POST: Customers/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Code,CreatedDate,Description,Commodity,CustomerId,Status,UpdatedDate,CreatedBy,UpdatedBy")] Contract contract)
+        public ActionResult Create([Bind(Include = "Id,Name,Address,CMND,CMNDCreatedDate,CMNDCreatedAt,Phone")] Customer customer)
         {
-            contract.Code = DateTime.Now.ToString("HHmmddMMyyyy");
-            contract.CreatedBy = CurrentUser.Id;
-            contract.CreatedDate = DateTime.Now;
-            contract.Status = 1;//Đang hiệu lực
+            customer.CreatedDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                db.Contracts.Add(contract);
+                db.Customers.Add(customer);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", contract.CustomerId);
-            return View(contract);
+            return View(customer);
         }
 
-        // GET: Contracts/Edit/5
+        // GET: Customers/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contract contract = db.Contracts.Find(id);
-            if (contract == null)
+            Customer customer = db.Customers.Find(id);
+            if (customer == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.UpdatedBy = new SelectList(db.Users, "Id", "Fullname", contract.UpdatedBy);
-            return View(contract);
+            return View(customer);
         }
 
-        // POST: Contracts/Edit/5
+        // POST: Customers/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Code,CreatedDate,Description,Commodity,CustomerId,Status,UpdatedDate,CreatedBy,UpdatedBy")] Contract contract)
+        public ActionResult Edit([Bind(Include = "Id,Name,Address,CMND,CMNDCreatedDate,CMNDCreatedAt,CreatedDate,Phone")] Customer customer)
         {
-            contract.UpdatedBy = CurrentUser.Id;
-            contract.UpdatedDate = DateTime.Now;
             if (ModelState.IsValid)
             {
-                db.Entry(contract).State = EntityState.Modified;
+                db.Entry(customer).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", contract.CustomerId);
-            return View(contract);
+            return View(customer);
         }
 
-        // GET: Contracts/Delete/5
+        // GET: Customers/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contract contract = db.Contracts.Find(id);
-            if (contract == null)
+            Customer customer = db.Customers.Find(id);
+            if (customer == null)
             {
                 return HttpNotFound();
             }
-            return View(contract);
+            return View(customer);
         }
 
-        // POST: Contracts/Delete/5
+        // POST: Customers/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Contract contract = db.Contracts.Find(id);
-            db.Contracts.Remove(contract);
+            Customer customer = db.Customers.Find(id);
+            db.Customers.Remove(customer);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

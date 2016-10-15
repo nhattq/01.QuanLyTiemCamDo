@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QLCamDo.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,8 @@ namespace QLCamDo
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            SampleData.InsertSample();
         }
     }
 }

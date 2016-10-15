@@ -49,8 +49,10 @@
             margin-top: 10px;
         }
     </style>
+
+   
 </head>
-<body class="skin-blue sidebar-mini">
+<body class="skin-green-light sidebar-mini">
     <div class="wrapper">
         <header class="main-header">
             <!-- Logo -->
@@ -112,12 +114,12 @@
                                 {
                                     continue;
                                 }
-                                <li class="treeview">
-                                    <a href="#">
-                                        <i class="fa fa-@objParent.Icon"></i> <span>@objParent.Name</span>
-                                    </a>
-                                    <ul class="treeview-menu">
-                                        @{
+                    <li class="treeview">
+                        <a href="#">
+                            <i class="fa fa-@objParent.Icon"></i> <span>@objParent.Name</span>
+                        </a>
+                        <ul class="treeview-menu">
+                            @{
                                             List<QLCamDo.Models.UserModule> lstChildren = _moduleRepository.GetAll(objParent.Id);
                                             if (lstChildren != null)
                                             {
@@ -127,12 +129,12 @@
                                                     {
                                                         continue;
                                                     }
-                                                    <li><a href="@Url.Action(objChildren.Action, objChildren.Controller.Replace("Controller", string.Empty))"><i class="fa fa-@objChildren.Icon"></i> @objChildren.Name</a></li>
+                            <li><a href="@Url.Action(objChildren.Action, objChildren.Controller.Replace("Controller", string.Empty))"><i class="fa fa-@objChildren.Icon"></i> @objChildren.Name</a></li>
                                                 }
                                             }
-                                        }
-                                    </ul>
-                                </li>
+                            }
+                        </ul>
+                    </li>
                                                 }
                                             }
                     }
@@ -194,6 +196,7 @@
                 $('#divMessage').html(data.result);
             });
         });
+       
     </script>
     <!-- jQuery 2.1.4 -->
     @*
@@ -206,9 +209,6 @@
     <script src="@Url.Content("~/Content/dashboard/dist/js/app.min.js")"></script>
     <!-- Sparkline -->
     <script src="@Url.Content("~/Content/dashboard/plugins/sparkline/jquery.sparkline.min.js")"></script>
-
-    <!--JSON2-->
-    <script src="@Url.Content("~/Content/js/json2_min.js")"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js"></script>
     <script src="@Url.Content("~/Content/dashboard/plugins/daterangepicker/daterangepicker.js")"></script>
@@ -228,7 +228,6 @@
     <!-- AdminLTE for demo purposes -->
     <script src="@Url.Content("~/Content/dashboard/dist/js/demo.js")"></script>
 
-    <script src="@Url.Content("~/Content/js/jquery.redirect.js")"></script>
     <script src="@Url.Content("~/Content/dashboard/plugins/fileinput/fileinput.min.js")"></script>
     @RenderSection("customScript", false)
     <script>
@@ -269,6 +268,53 @@
             function (start, end) {
                 $(this).val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
             });
+
+
+        function createCookie(name, value, days) {
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                var expires = "; expires=" + date.toGMTString();
+            }
+            else var expires = "";
+            document.cookie = name + "=" + value + expires + "; path=/";
+        }
+
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        $('.treeview a').click(function () {
+            var href = $(this).attr('href');
+            createCookie('menuactive', href, 1);
+           // return false;
+        });
+
+
+        $(document).ready(function () {
+            var href = readCookie('menuactive');
+            if (href == null)
+                return;
+            $('.treeview a').each(function () {
+                if ($(this).attr('href') == href) {
+                    $(this).addClass('active');
+                    $(this).parents('ul.treeview-menu').css('display', 'block');
+                }
+            });
+        });
     </script>
+    <style type="text/css">
+        .treeview a.active{
+            color:#00a65a!important;
+            font-weight:bold;
+        }
+    </style>
 </body>
 </html>

@@ -1,0 +1,102 @@
+﻿@model QLCamDo.Models.Customer
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<section class="content-header">
+    <h1>
+        Chỉnh sửa khách hàng
+        <small>Tất cả thông tin khách hàng trong hệ thống</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Dashboard","User")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active"> Chỉnh sửa khách hàng</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- COLOR PALETTE -->
+    <div class="box box-default color-palette-box">
+        <div class="main-box clearfix">
+            <div class="col-md-12">
+                @Html.Raw(ViewBag.Message)
+            </div>
+            @using (Html.BeginForm("Edit", "Customers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-lg-12">
+                    <div class="box-header with-border">
+                        <div class="box-title">
+                            Thông tin khách hàng
+                        </div>
+                    </div>
+                    <div class="main-box-body clearfix">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label" })
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CMND)
+                                    @Html.TextBoxFor(model => model.CMND, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.CMND, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CMNDCreatedAt)
+                                    @Html.TextBoxFor(model => model.CMNDCreatedAt, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.CMNDCreatedAt, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CMNDCreatedDate)
+                                    @Html.TextBoxFor(model => model.CMNDCreatedDate, new { @class = "form-control datepicker" })
+                                    @Html.ValidationMessageFor(model => model.CMNDCreatedDate, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Phone)
+                                    @Html.TextBoxFor(model => model.Phone, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @Html.Hidden("CreatedDate")
+                    <div class="box-footer">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <a href="@Url.Action("Index")" class="btn btn-default">Trở về</a>
+                                <button type="submit" class="btn btn-info pull-right">Cập nhật</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</section>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+

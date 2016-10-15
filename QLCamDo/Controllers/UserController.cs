@@ -90,7 +90,7 @@ namespace QLCamDo.Controllers
             }
 
             Session[GlobalConst.OAuthSession] = objUser;
-            return RedirectToAction("Index", "Report");
+            return RedirectToAction("Dashboard", "User");
         }
 
         public ActionResult Create()

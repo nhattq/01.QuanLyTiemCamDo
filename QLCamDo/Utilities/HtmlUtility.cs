@@ -26,7 +26,10 @@ namespace QLCamDo.Utilities
         {
             return status ? "<span class=\"label label-success\"><i class=\"fa fa-check-circle-o\"></i></span>" : "<span class=\"label label-danger\"><i class=\"fa fa-ban\"></i></span>";
         }
-
+        public static string BuildHtmlContractStatus(byte status)
+        {
+            return status == 0 ? "<span class=\"label label-success\">Đã thanh lý</span>" : "<span class=\"label label-danger\">Đang hiệu lực</span>";
+        }
         public static string BuildHtmlAccess(bool status)
         {
             return status ? "<span class=\"label label-success\">Được phép</span>" : "<span class=\"label label-danger\">Không được phép</span>";

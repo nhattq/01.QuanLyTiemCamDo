@@ -4421,3 +4421,10 @@ table.text-center th {
     white-space: normal!important;
   }
 }
+
+
+/*Custom*/
+
+table th{
+    text-align:center;
+}
