@@ -270,10 +270,10 @@
             });
 
 
-        function createCookie(name, value, days) {
+        function createCookie(name, value, second) {
             if (days) {
                 var date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                date.setTime(date.getTime() + (second * 1000));
                 var expires = "; expires=" + date.toGMTString();
             }
             else var expires = "";
@@ -293,7 +293,7 @@
 
         $('.treeview a').click(function () {
             var href = $(this).attr('href');
-            createCookie('menuactive', href, 1);
+            createCookie('menuactive', href, 300);
            // return false;
         });
 

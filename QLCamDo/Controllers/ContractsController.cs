@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using QLCamDo.Models;
 using QLCamDo.Bases;
+using QLCamDo.Utilities;
 
 namespace QLCamDo.Controllers
 {
@@ -18,6 +19,8 @@ namespace QLCamDo.Controllers
         // GET: Contracts
         public ActionResult Index()
         {
+            InitPermission(Request);
+            InitMessage("hợp đồng");
             var contracts = db.Contracts.Include(c => c.Customer).Include(c => c.User).Include(c => c.User1);
             return View(contracts.ToList());
         }
@@ -59,9 +62,10 @@ namespace QLCamDo.Controllers
             {
                 db.Contracts.Add(contract);
                 db.SaveChanges();
+                Session[Utilities.GlobalConst.SessionMessage] = (int)Utilities.HtmlUtility.ActionType.Created;
                 return RedirectToAction("Index");
             }
-
+            ViewBag.Message = HtmlUtility.BuildMessageTemplate("Thêm mới hợp đồng không thành công", HtmlUtility.MessageType.Error);
             ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", contract.CustomerId);
             return View(contract);
         }
@@ -73,12 +77,13 @@ namespace QLCamDo.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Contract contract = db.Contracts.Find(id);
+            Contract contract = db.Contracts.Include(c => c.Customer).Include(c => c.User).Include(c => c.User1).FirstOrDefault(o => o.Id == id);
             if (contract == null)
             {
                 return HttpNotFound();
             }
             ViewBag.UpdatedBy = new SelectList(db.Users, "Id", "Fullname", contract.UpdatedBy);
+
             return View(contract);
         }
 
@@ -87,17 +92,27 @@ namespace QLCamDo.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Code,CreatedDate,Description,Commodity,CustomerId,Status,UpdatedDate,CreatedBy,UpdatedBy")] Contract contract)
+        public ActionResult Edit(Contract obj)
         {
+            Contract contract = db.Contracts.Include(c => c.Customer)
+                .Include(c => c.User)
+                .Include(c => c.User1)
+                .FirstOrDefault(o => o.Id == obj.Id);
+
             contract.UpdatedBy = CurrentUser.Id;
             contract.UpdatedDate = DateTime.Now;
+            contract.Status = obj.Status;
+            contract.Description = obj.Description;
+            contract.Commodity = obj.Commodity;
+
             if (ModelState.IsValid)
             {
                 db.Entry(contract).State = EntityState.Modified;
                 db.SaveChanges();
+                Session[Utilities.GlobalConst.SessionMessage] = (int)Utilities.HtmlUtility.ActionType.Updated;
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerId = new SelectList(db.Customers, "Id", "Name", contract.CustomerId);
+            ViewBag.Message = HtmlUtility.BuildMessageTemplate("Cập nhật hợp đồng không thành công", HtmlUtility.MessageType.Error);
             return View(contract);
         }
 

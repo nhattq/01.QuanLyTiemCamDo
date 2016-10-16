@@ -1,107 +1,117 @@
 ﻿@model QLCamDo.Models.Contract
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Dashboard.cshtml";
+
 }
 
-<h2>Edit</h2>
 
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Contract</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+<section class="content-header">
+    <h1>
+        Chỉnh sửa hợp đồng
+        <small>Chỉnh sửa hợp đồng trong hệ thống</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("Dashboard","User")"><i class="fa fa-dashboard"></i> Bảng điều khiển</a></li>
+        <li class="active"> Chỉnh sửa hợp đồng</li>
+    </ol>
+</section>
+<section class="content">
+    <!-- COLOR PALETTE -->
+    <div class="box box-default color-palette-box">
+        <div class="main-box clearfix">
+            <div class="col-md-12">
+                @Html.Raw(ViewBag.Message)
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreatedDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Commodity, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Commodity, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Commodity, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CustomerId, "CustomerId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CustomerId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CustomerId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdatedDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UpdatedDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CreatedBy, "CreatedBy", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("CreatedBy", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CreatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdatedBy, "UpdatedBy", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("UpdatedBy", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.UpdatedBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
+            @using (Html.BeginForm("Edit", "Contracts", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="col-lg-12">
+                    <div class="box-header with-border">
+                        <div class="box-title">
+                            Thông tin hợp đồng
+                        </div>
+                    </div>
+                    <div class="main-box-body clearfix">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table">
+                                    <tr>
+                                        <td width="20%">Mã hợp đồng</td>
+                                        <td><strong>@Model.Code</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%">Tên khách hàng</td>
+                                        <td><strong>@Model.Customer.Name</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%">Địa chỉ</td>
+                                        <td><strong>@Model.Customer.Address</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%">Điện thoại</td>
+                                        <td><strong>@Model.Customer.Phone</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td width="20%">Chứng minh nhân dân</td>
+                                        <td><strong>@Model.Customer.CMND</strong></td>
+                                        <td width="20%">Ngày cấp</td>
+                                        <td style="text-align:left"><strong>@Model.Customer.CMNDCreatedDate.ToString("dd/MM/yyyy")</strong></td>
+                                        <td width="20%">Nơi cấp</td>
+                                        <td style="text-align:left"><strong>@Model.Customer.CMNDCreatedAt</strong></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        @Html.HiddenFor(o => o.Id)
+                        @Html.HiddenFor(o => o.Code)
+                        @Html.HiddenFor(o => o.CustomerId)
+                        @Html.HiddenFor(o => o.CreatedDate)
+                        @Html.HiddenFor(o => o.CreatedBy)
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Mô tả hợp đồng</label>
+                                    @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "5" })
+                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Chi tiết mặt hàng cầm cố</label>
+                                    @Html.TextAreaFor(model => model.Commodity, new { @class = "form-control", rows = "5" })
+                                    @Html.ValidationMessageFor(model => model.Commodity, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Trạng thái</label>
+                                    <select name="Status" class="form-control">
+                                        <option value="0" @(Model.Status==0?"selected=selected":"")>Đã thanh lý</option>
+                                        <option value="1" @(Model.Status==1?"selected=selected":"")>Đang hiệu lực</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <a href="@Url.Action("Index")" class="btn btn-default">Trở về</a>
+                        <button type="submit" class="btn btn-info pull-right">Cập nhật</button>
+                    </div>
+                </div>
+            }
         </div>
     </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
-
+</section>
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+
+
+
+
+
